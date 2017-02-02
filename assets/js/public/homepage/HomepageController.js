@@ -5,6 +5,36 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
 		loading: false
 	}
 
+	$scope.forgotPass = function () {
+    console.log("FOrgot pass starts");
+    console.log($scope.forgotMail);
+    $http.post('/forgotPass', {
+      email: $scope.forgotMail
+    })
+      .then(function onSuccess(sailsResponse){
+        window.location = '/';
+      })
+      .catch(function onError(sailsResponse){
+
+        // Handle known error type(s).
+        // If using sails-disk adpater -- Handle Duplicate Key
+        var emailAddressAlreadyInUse = sailsResponse.status == 409;
+
+        if (emailAddressAlreadyInUse) {
+          toastr.error('That email address has already been taken, please try again.', 'Error');
+          return;
+        }
+
+      })
+      .finally(function eitherWay(){
+        $scope.signupForm.loading = false;
+      })
+
+
+
+
+  };
+
 	$scope.submitLoginForm = function (){
 
     // Set the loading state (i.e. show loading spinner)
@@ -45,3 +75,8 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
 
 
 }]);
+function pass() {
+
+  console.log("Query starts... ");
+  UserControler.forgotPass(req, res);
+}

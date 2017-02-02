@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
   <head>
     <title>Kinect.PRO</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+    <script src="/js/dependencies/jquery.js"></script>
 
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/angular-toastr.css">
@@ -36,9 +37,12 @@
           <!-- This is the brand on the left-hand side. -->
           <a class="navbar-brand" href="/#"> Kinect.PRO</a>
           <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
-          <form ng-submit="submitLoginForm()" class="navbar-form navbar-right">
 
-              <div class="form-group">
+          <form ng-submit="submitLoginForm()" class="navbar-form navbar-right">
+            <a href="" id="myBtn">Forgot Password ?</a>
+
+
+            <div class="form-group">
                   <input ng-model="loginForm.email" type="text" placeholder="Email" name="email" class="form-control">
               </div>
               <div class="form-group">
@@ -49,9 +53,17 @@
                 <span ng-show="loginForm.loading" class="fa fa-spinner"></span>
                 <span ng-show="loginForm.loading">Signing in...</span>
               </button>
-              <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+
+            <input type="hidden" name="_csrf" value="<%= _csrf %>" />
           </form>
+            </div>
         </nav>
+
+
+
+
+
+      </div>
       </div>
     </div>
 
@@ -71,10 +83,46 @@
     </div>
 
 
+
+
+
+
+
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Enter your email adress</h4>
+          </div>
+          <div class="modal-body">
+            <input ng-model="forgotMail" type="email" placeholder="email" name="email" class="form-control">
+
+          </div>
+
+          <div class="text-center">
+            <button ng-click="forgotPass()" type="button" class="btn btn-success" data-dismiss="modal">Comfirm email</button>
+            <p></p>
+          </div>
+          </div>
+
+      </div>
+    </div>
+
+
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/js/dependencies/angular.1.3.js"></script>
     <script src="/js/dependencies/angular-toastr.js"></script>
+    <script src="/js/dependencies/bootstrap.js"></script>
     <script src="/js/dependencies/compareTo.module.js"></script>
     <script src="/js/public/signup/SignupModule.js"></script>
     <script src="/js/private/dashboard/DashboardModule.js"></script>
@@ -82,6 +130,7 @@
     <script src="/js/private/dashboard/DashboardController.js"></script>
     <script src="/js/public/homepage/HomepageController.js"></script>
     <script src="/js/public/signup/SignupController.js"></script>
+    <script src="/js/script.js"></script>
     <!--SCRIPTS END-->
   </body>
 </html>

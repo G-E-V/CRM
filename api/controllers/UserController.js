@@ -11,6 +11,28 @@ module.exports = {
    * Check the provided email address and password, and if they
    * match a real user in the database, sign in to Activity Overlord.
    */
+  forgotPass: function (req, res) {
+    console.log("forgot Pass active");
+    User.findOne({
+        email: req.param('email')
+      }, function foundUser(err, user) {
+      if (err){
+        console.log("Error")
+        return res.negotiate(err);
+      }
+      if (!user) {
+        console.log("User not found");
+        return res.notFound()
+      }
+      console.log(user.encryptedPassword);
+      console.log("SUCCESS");
+
+      // All done- let the client know that everything worked.
+      return res.ok();
+    });
+
+
+  },
   login: function (req, res) {
     console.log("Login in action");
     // Try to look up user using the provided email address

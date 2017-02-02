@@ -19,7 +19,10 @@ module.exports = {
     // The user's title at their job (or something)
     // e.g. Genius
     title: {
-      type: 'string'
+      type: 'string',
+      required: true,
+      unique: true
+
     },
 
     // The user's email address
