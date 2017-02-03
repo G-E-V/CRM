@@ -40,6 +40,10 @@ module.exports = {
       type: 'string',
       required: true
     },
+      password: {
+      type: 'string',
+      required: true
+    },
 
     // The timestamp when the the user last logged in
     // (i.e. sent a username and password to the server)

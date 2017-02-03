@@ -26,6 +26,13 @@ module.exports = {
       }
       console.log(user.encryptedPassword);
       console.log("SUCCESS");
+      if (user) {
+        Mailer.sendWelcomeMail(user);  // <= Here we using
+        res.json(200, {user: user});
+        // $('#success').css('visibility', 'visible');
+        // console.log("Mail Sentingggg");
+
+      }
 
       // All done- let the client know that everything worked.
       return res.ok();
@@ -104,6 +111,7 @@ module.exports = {
               name: req.param('name'),
               title: req.param('title'),
               email: req.param('email'),
+              password: req.param('password'),
               encryptedPassword: encryptedPassword,
               lastLoggedIn: new Date(),
               gravatarUrl: gravatarUrl

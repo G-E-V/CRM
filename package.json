@@ -24,6 +24,7 @@
     "rc": "~0.5.0",
     "sails": "~0.11.0-rc5",
     "sails-disk": "~0.10.0",
+    "sails-hook-email": "^0.12.1",
     "sails-mysql": "^0.11.5"
   },
   "scripts": {
