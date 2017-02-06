@@ -20,7 +20,7 @@
   <body ng-app="DashboardModule" ng-controller="DashboardController" ng-cloak>
 
     <!-- container = Fixed-width container container-fluid = full-width -->
-    <div class="container-fluid">
+    <div class="container-fluid" ng-init="getProjects()">
       <!-- Creates the navbar -->
       <nav class="navbar navbar-default navbar-inverse">
         <!-- This creates the mechanism for collapse button -->
@@ -50,9 +50,28 @@
           </ul>
         </div>
       </nav>
-
+        <center>
       <h1>Welcome to Kinect.PRO Team</h1>
+      </center>
+      <div class="tab-content">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Tracker</th>
+            <th>Subject</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
 
+      </div>
     </div>
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>

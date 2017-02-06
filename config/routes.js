@@ -48,7 +48,8 @@ module.exports.routes = {
   'POST /signup': 'UserController.signup',
   'POST /forgotPass': 'UserController.forgotPass',
   'PUT /login': 'UserController.login',
-  'GET /logout': 'UserController.logout'
+  'GET /logout': 'UserController.logout',
+  'GET /getProjects': 'ProjectsController.getProjects'
 
   // '/': {
   //   view: 'homepage'
