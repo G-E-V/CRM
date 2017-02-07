@@ -19,8 +19,9 @@
   </head>
   <body ng-app="DashboardModule" ng-controller="DashboardController" ng-cloak>
 
-    <!-- container = Fixed-width container container-fluid = full-width -->
-    <div class="container-fluid" ng-init="getProjects()">
+
+  <!-- container = Fixed-width container container-fluid = full-width -->
+    <div class="container-fluid"  ng-init="getProjects(<%=me.id%>)">
       <!-- Creates the navbar -->
       <nav class="navbar navbar-default navbar-inverse">
         <!-- This creates the mechanism for collapse button -->
@@ -31,7 +32,7 @@
         <span class="icon-bar"></span>
         </button>
         <!-- This is the brand on the left-hand side. -->
-        <a class="navbar-brand" href="/#">Kinect.PRO</a>
+        <a class="navbar-brand" href="/#">Kinect.PRO  -   <%=me.name%></a>
         <!-- This is what is the above collapse button points to when the mark-up below is collapsed -->
         <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
           <!-- This is what "styles" the li's as navbar items -->
@@ -51,10 +52,29 @@
         </div>
       </nav>
         <center>
-      <h1>Welcome to Kinect.PRO Team</h1>
+      <h1>Your projects at Kinect.PRO</h1>
       </center>
-      <div class="tab-content">
-        <table class="table table-bordered">
+      <div class="col-sm-6">
+        <table class="table table-bordered" >
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Project</th>
+            <th>Description</th>
+          </tr>
+          </thead>
+          <tbody ng-repeat="Project in projects">
+          <tr>
+            <td>{{Project.project_id}}</td>
+            <td><a href="#" ng-click="getIssues(Project.project_id)">{{Project.project_name}}</a></td>
+            <td>{{Project.description}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-sm-6" ng-show="issues.length != 0 && issues">
+        <table class="table table-bordered" >
           <thead>
           <tr>
             <th>#</th>
@@ -62,16 +82,21 @@
             <th>Subject</th>
           </tr>
           </thead>
-          <tbody>
+          <tbody ng-repeat="issue in issues">
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{issue.id}}</td>
+            <td><a href="#" ng-click="">{{issue.tracker}}</a></td>
+            <td>{{issue.subject}}</td>
+
           </tr>
+
           </tbody>
         </table>
 
       </div>
+
+
+
     </div>
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>

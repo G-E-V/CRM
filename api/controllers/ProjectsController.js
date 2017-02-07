@@ -9,45 +9,29 @@ module.exports = {
 
 
   getProjects: function (req, res) {
+    console.log(req.param('id'));
     console.log("Get projects active");
-    Projects.query('SELECT * FROM projects, project_user WHERE projects.id = project_user.project_id AND  user_id = ?', [1], function (err, rawesult) {
+    Projects.query('SELECT * FROM projects, project_user WHERE projects.id = project_user.project_id AND  user_id = ?', [req.param('id')], function (err, rawesult) {
       if (err) {
         return res.serverError(err);
       }
       // console.log(res);
       console.log(rawesult);
-      return res.ok();
+      return res.ok(rawesult);
     });
+  },
+  getIssues: function (req, res) {
+    console.log("Getting issues");
+    console.log("Project id  = " + req.param('id'));
+    Projects.query('SELECT project_tracker.tracker, project_tracker.subject, project_tracker.id FROM project_tracker WHERE project_tracker.project_id = ?', [req.param('id')], function (err, raweresult) {
+      if (err) {
+        return res.serverError(err);
+      }
+      // console.log(res);
+      console.log(raweresult);
+      return res.ok(raweresult);
+    })
   }
-
-
-
-
-    // Projects.find({
-    //   poject_id: req.param('')
-    // }, function foundUser(err, user) {
-    //   if (err){
-    //     console.log("Error")
-    //     return res.negotiate(err);
-    //   }
-    //   if (!user) {
-    //     console.log("User not found");
-    //     return res.notFound()
-    //   }
-    //   console.log(user.encryptedPassword);
-    //   console.log("SUCCESS");
-    //   if (user) {
-    //     Mailer.sendWelcomeMail(user);  // <= Here we using
-    //     res.json(200, {user: user});
-    //     // $('#success').css('visibility', 'visible');
-    //     // console.log("Mail Sentingggg");
-    //
-    //   }
-    //
-    //   // All done- let the client know that everything worked.
-    //   return res.ok();
-    // });
-
 
   };
 

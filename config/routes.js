@@ -49,7 +49,8 @@ module.exports.routes = {
   'POST /forgotPass': 'UserController.forgotPass',
   'PUT /login': 'UserController.login',
   'GET /logout': 'UserController.logout',
-  'GET /getProjects': 'ProjectsController.getProjects'
+  'POST /getProjects': 'ProjectsController.getProjects',
+  'POST /getIssues': 'ProjectsController.getIssues'
 
   // '/': {
   //   view: 'homepage'
