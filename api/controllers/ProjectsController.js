@@ -31,6 +31,18 @@ module.exports = {
       console.log(raweresult);
       return res.ok(raweresult);
     })
+  },
+  getIssue: function (req, res) {
+    console.log("Getting issue");
+    console.log("Issue id  = " + req.param('id'));
+    Projects.query('SELECT * FROM project_tracker WHERE project_tracker.project_id = ?', [req.param('id')], function (err, raweresult) {
+      if (err) {
+        return res.serverError(err);
+      }
+      // console.log(res);
+      console.log(raweresult);
+      return res.ok(raweresult);
+    })
   }
 
   };

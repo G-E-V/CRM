@@ -5,3 +5,8 @@ $(document).ready(function(){
     $("#myModal").modal();
   });
 });
+ function issue() {
+   console.log("Modal window issue");
+   $("#myModal").modal().fadeIn();
+
+ }

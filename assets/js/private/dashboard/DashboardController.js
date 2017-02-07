@@ -40,8 +40,25 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
   };
 
 
+  $scope.openIssue = function (id) {
+      console.log(id);
+      console.log("Getting Issue");
+      $http.post('/getIssue', {
+           id: id
+      })
+        .then(function onSuccess(sailsResponse){
 
-
+          $scope.issue = sailsResponse.data;
+          console.log(sailsResponse.data);
+          // window.location = '/';
+        })
+        .catch(function onError(sailsResponse){
+          console.log(sailsResponse.data);
+        })
+        .finally(function eitherWay(){
+          console.log("Finally");
+        })
+    };
 
 }]);
 
