@@ -51,7 +51,8 @@ module.exports.routes = {
   'GET /logout': 'UserController.logout',
   'POST /getProjects': 'ProjectsController.getProjects',
   'POST /getIssues': 'ProjectsController.getIssues',
-  'POST /getIssue': 'ProjectsController.getIssue'
+  'POST /getIssue': 'ProjectsController.getIssue',
+  'POST /addProject': 'ProjectsController.addProject'
 
   // '/': {
   //   view: 'homepage'

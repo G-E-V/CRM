@@ -1,6 +1,8 @@
 angular.module('DashboardModule').controller('DashboardController', ['$scope', '$http', 'toastr', function($scope, $http, toastr){
 
+  $scope.getUsers = function () {
 
+  };
   $scope.getProjects = function (user_id) {
     console.log("Getting projects");
     console.log(user_id);
@@ -58,7 +60,21 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
         .finally(function eitherWay(){
           console.log("Finally");
         })
-    };
+    }
+    $scope.addProject = function () {
+      console.log("Adding Project...."+ $scope.newProjectTitle,$scope.newProjectDescription);
+      $http.post('/addProject',{
+        project_name : $scope.newProjectTitle,
+        description : $scope.newProjectDescription
+      }).then(function onSuccess(sailsResponse){
+        console.log("Record added to db");
+          window.location = '/';
+      })
+        .catch(function onError(sailsResponse){
+          console.log("ERRRROOORR");
+        })
+
+    }
 
 }]);
 
