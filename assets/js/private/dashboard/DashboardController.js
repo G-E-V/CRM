@@ -1,8 +1,5 @@
 angular.module('DashboardModule').controller('DashboardController', ['$scope', '$http', 'toastr', function($scope, $http, toastr){
 
-  $scope.getUsers = function () {
-
-  };
   $scope.getProjects = function (user_id) {
     console.log("Getting projects");
     console.log(user_id);
@@ -22,6 +19,26 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
         console.log("Finally");
       })
   };
+
+  $scope.getUsers = function () {
+    console.log("Getting Users");
+    console.log();
+    $http.post('/getUsers', {
+    })
+      .then(function onSuccess(sailsResponse){
+        $scope.users = sailsResponse.data;
+        console.log(sailsResponse.data);
+        // window.location = '/';
+      })
+      .catch(function onError(sailsResponse){
+        console.log(sailsResponse.data);
+
+      })
+      .finally(function eitherWay(){
+        console.log("Finally");
+      })
+  };
+
   $scope.getIssues = function (id) {
     console.log(id);
     console.log("Getting Issues");
@@ -62,10 +79,17 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
         })
     }
     $scope.addProject = function () {
-      console.log("Adding Project...."+ $scope.newProjectTitle,$scope.newProjectDescription);
+      console.log("Adding Project...."+ $scope.newProjectTitle,$scope.newProjectDescription,$scope.selectedUser);
+      for(var i = 0; i < $scope.users.length; i++){
+        if($scope.users[i].name == $scope.selectedUser){
+          $scope.selectedUser_id = $scope.users[i].id;
+        }
+      }
+      console.log($scope.selectedUser_id);
       $http.post('/addProject',{
         project_name : $scope.newProjectTitle,
-        description : $scope.newProjectDescription
+        description : $scope.newProjectDescription,
+        user : $scope.selectedUser_id
       }).then(function onSuccess(sailsResponse){
         console.log("Record added to db");
           window.location = '/';

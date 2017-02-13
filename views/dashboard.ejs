@@ -19,7 +19,6 @@
     <script src="/js/dependencies/angular-toastr.js"></script>
     <script src="/js/dependencies/bootstrap.js"></script>
     <script src="/js/dependencies/compareTo.module.js"></script>
-    <script src="/js/dependencies/jquery.js"></script>
     <script src="/js/public/signup/SignupModule.js"></script>
     <script src="/js/private/dashboard/DashboardModule.js"></script>
     <script src="/js/public/homepage/HomepageModule.js"></script>
@@ -40,7 +39,7 @@
 
 
   <!-- container = Fixed-width container container-fluid = full-width -->
-    <div class="container-fluid"  ng-init="getProjects(<%=me.id%>)">
+    <div class="container-fluid"  ng-init="getProjects(<%=me.id%>)" >
       <!-- Creates the navbar -->
       <nav class="navbar navbar-default navbar-inverse">
         <!-- This creates the mechanism for collapse button -->
@@ -91,7 +90,7 @@
           <tr>
             <td>{{Project.project_id}}</td>
             <td><a href="#" ng-click="getIssues(Project.project_id)">{{Project.project_name}}</a></td>
-            <td>{{Project.description}}</td>
+            <td><a href="#" ng-click="openProject()">{{Project.description}}</a><span class="glyphicon glyphicon-plus pull-right" aria-hidden="true"></span></td>
           </tr>
           </tbody>
         </table>
@@ -109,8 +108,8 @@
           <tbody ng-repeat="issue in issues" >
           <tr>
             <td>{{issue.id}}</td>
-            <td onclick="issue()"><a href="#" ng-click="openIssue(issue.id)">{{issue.tracker}}</a></td>
-            <td>{{issue.subject}}</td>
+            <td>{{issue.tracker}}</td>
+            <td onclick="issue()"><a href="#" ng-click="openIssue(issue.id)">{{issue.subject}}</a></td>
 
           </tr>
 
@@ -130,7 +129,7 @@
           <h4 class="modal-title">{{issue[0].tracker}} # {{issue[0].id}}</h4>
         </div>
         <div class="modal-body">
-          {{issue[0].description}}
+          {{issue[0].subject}}
           <!--<input ng-model="forgotMail" type="email" placeholder="email" name="email" class="form-control">-->
 
         </div>
@@ -141,7 +140,7 @@
   </div>
 
 
-  <div class="modal fade bs-example-modal-lg" tabindex="-1" id="addProject" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" id="addProject" role="dialog" aria-labelledby="myLargeModalLabel" ng-init="getUsers()">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -162,13 +161,9 @@
               </div>
               <label>Project developer</label>
               <div class="dropdown col-sm-6">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  Dropdown
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                  <li ng-repeat=""><a href="#">Action</a></li>
-                </ul>
+                <select class="form-control" id="sel1" ng-model="selectedUser">
+                  <option ng-repeat="user in users" >{{user.name}}</option>
+                </select>
               </div>
 
               <div class="control-group form-group col-md-12">

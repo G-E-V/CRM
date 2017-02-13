@@ -20,6 +20,17 @@ module.exports = {
       return res.ok(rawesult);
     });
   },
+  getUsers: function (req, res) {
+    console.log("Get users Server");
+    Projects.query('SELECT name,id FROM user',function (err, rawesult) {
+      if (err) {
+        return res.serverError(err);
+      }
+      // console.log(res);
+      console.log(rawesult);
+      return res.ok(rawesult);
+    });
+  },
   getIssues: function (req, res) {
     console.log("Getting issues Server");
     console.log("Project id  = " + req.param('id'));
@@ -47,7 +58,7 @@ module.exports = {
 
   addProject: function (req, res) {
     console.log("Adding project Server");
-    console.log(req.param('project_name'),req.param('description'));
+    console.log(req.param('project_name'),req.param('description'),req.param('user'));
     Projects.create({
       project_name: req.param('project_name'),
       description: req.param('description')
@@ -55,10 +66,15 @@ module.exports = {
       if (err) {
         return res.serverError(err);
       }
-      // Project_user.create({
-      //   project_id: newProject.id
-      //   user_id:
-      // })
+      Project_user.create({
+        project_id: newProject.id,
+        user_id: req.param('user')
+      }).exec(function (err, newId) {
+        if (err) {
+          return res.serverError(err + "Error in Project_User");
+        }
+        console.log("Id's added");
+      });
       console.log(newProject);
       return res.json(200, { success: 'Success' });
     });
