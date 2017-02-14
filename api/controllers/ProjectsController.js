@@ -20,17 +20,6 @@ module.exports = {
       return res.ok(rawesult);
     });
   },
-  getUsers: function (req, res) {
-    console.log("Get users Server");
-    Projects.query('SELECT name,id FROM user',function (err, rawesult) {
-      if (err) {
-        return res.serverError(err);
-      }
-      // console.log(res);
-      console.log(rawesult);
-      return res.ok(rawesult);
-    });
-  },
   getIssues: function (req, res) {
     console.log("Getting issues Server");
     console.log("Project id  = " + req.param('id'));
@@ -76,6 +65,21 @@ module.exports = {
         console.log("Id's added");
       });
       console.log(newProject);
+      return res.json(200, { success: 'Success' });
+    });
+  },
+  addIssue: function (req, res) {
+    console.log("Adding issue Server");
+    console.log(req.param('project_id'),req.param('tracker'),req.param('subject'));
+    Project_tracker.create({
+      project_id: req.param('project_id'),
+      tracker: req.param('tracker'),
+      subject: req.param('subject'),
+    }).exec(function (err, newIssue){
+      if (err) {
+        return res.serverError(err);
+      }
+      console.log(newIssue);
       return res.json(200, { success: 'Success' });
     });
   }

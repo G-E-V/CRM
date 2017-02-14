@@ -171,6 +171,17 @@ module.exports = {
       return res.backToHomePage();
 
     });
-  }
+  },
+  getUsers: function (req, res) {
+    console.log("Get users Server");
+    User.query('SELECT name,id FROM user',function (err, rawesult) {
+      if (err) {
+        return res.serverError(err);
+      }
+      // console.log(res);
+      console.log(rawesult);
+      return res.ok(rawesult);
+    });
+  },
 
 };

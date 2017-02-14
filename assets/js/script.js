@@ -5,14 +5,19 @@ $(document).ready(function(){
     $("#myModal").modal();
   });
   $("#project").click(function(){
+    console.log("Modal window --add project-- ");
     $("#addProject").modal();
   });
+  // $('#newIssue').click(function(){
+  //   console.log("Modal window --add issue-- ");
+  //   $("#addIssue").modal();
+  // });
 
 
 
 });
- function issue() {
+ function newIssue() {
    console.log("Modal window issue");
-   $("#myModal").modal().fadeIn();
+   $("#addIssue").modal().fadeIn();
 
  }

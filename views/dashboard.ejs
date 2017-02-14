@@ -5,15 +5,10 @@
     <meta charset="utf-8">
     <title>Kinect.PRO </title>
     <script src="/js/dependencies/jquery.js"></script>
-
-    <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <!--STYLES-->
     <link rel="stylesheet" href="/styles/angular-toastr.css">
     <link rel="stylesheet" href="/styles/bootstrap.3.1.1.css">
     <link rel="stylesheet" href="/styles/importer.css">
-    <!--STYLES END-->
-    <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/js/dependencies/angular.1.3.js"></script>
     <script src="/js/dependencies/angular-toastr.js"></script>
@@ -26,7 +21,6 @@
     <script src="/js/public/homepage/HomepageController.js"></script>
     <script src="/js/public/signup/SignupController.js"></script>
     <script src="/js/script.js"></script>
-    <!--SCRIPTS END-->
     <!--Added this so the client has access to the csrf tag and it's grabbed first service side on every page -->
     <script type="text/javascript">
     window.SAILS_LOCALS = {
@@ -77,7 +71,7 @@
       <center>
       <h1>Your projects at Kinect.PRO</h1>
       </center>
-      <div class="col-sm-6">
+      <div class="col-sm-6 projects">
         <table class="table table-bordered" >
           <thead>
           <tr>
@@ -90,7 +84,7 @@
           <tr>
             <td>{{Project.project_id}}</td>
             <td><a href="#" ng-click="getIssues(Project.project_id)">{{Project.project_name}}</a></td>
-            <td><a href="#" ng-click="openProject()">{{Project.description}}</a><span class="glyphicon glyphicon-plus pull-right" aria-hidden="true"></span></td>
+            <td><a href="#" ng-click="openProject()">{{Project.description}}</a><span id="newIssue"onclick="newIssue()" ng-click="issueProject(Project.project_id)"  class="glyphicon glyphicon-plus pull-right" aria-hidden="true"></span></td>
           </tr>
           </tbody>
         </table>
@@ -119,7 +113,7 @@
       </div>
 
 
-
+<!--  Issue modal window  -->
     </div>
   <div class="modal fade bs-example-modal-lg" tabindex="-1" id="myModal" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -138,7 +132,9 @@
 
     </div>
   </div>
+  <!--  Issue modal window end -->
 
+  <!--  Create project modal window  -->
 
   <div class="modal fade bs-example-modal-lg" tabindex="-1" id="addProject" role="dialog" aria-labelledby="myLargeModalLabel" ng-init="getUsers()">
     <div class="modal-dialog modal-lg" role="document">
@@ -159,8 +155,9 @@
             <span ng-show="addProject.name.$error.maxlength">The name of project cannot be more than 50 characters.</span>
           </span>
               </div>
-              <label>Project developer</label>
+
               <div class="dropdown col-sm-6">
+                <label>Project developer</label>
                 <select class="form-control" id="sel1" ng-model="selectedUser">
                   <option ng-repeat="user in users" >{{user.name}}</option>
                 </select>
@@ -169,23 +166,17 @@
               <div class="control-group form-group col-md-12">
                 <label>Description of project</label>
                 <input type="text" class="form-control" placeholder="" ng-model="newProjectDescription">
-                <span class="help-block has-error" ng-if="addProject.description.$dirty">
-            <span ng-show="addProject.description.$error.required">Title is required.</span>
           </span>
               </div>
             <br/>
-
-            <!-- Disable signup button until the form has no errors -->
-              <div class="col-sm-6">
-            <button class="btn btn-primary btn-lg btn-block" type="submit" ng-disabled="addProject.name" ng-click="addProject()">
-              <span ng-show="!signupForm.loading">Add Project</span>
-              <span class="overlord-loading-spinner fa fa-spinner" ng-show="signupForm.loading" ></span>
-              <span ng-show="signupForm.loading">Preparing your new project...</span>
+              <div class="col-sm-4 col-sm-offset-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit" ng-disabled="((newProjectTitle == null) || (newProjectDescription == null) || (selectedUser == null))" ng-click="addProject()">
+              <span>Add Project</span>
+              <!--<span class="overlord-loading-spinner fa fa-spinner" ng-show="signupForm.loading" ></span>-->
+              <!--<span ng-show="signupForm.loading">Preparing your new project...</span>-->
             </button>
                 </div>
-
             </div>
-          <!--<input ng-model="forgotMail" type="email" placeholder="email" name="email" class="form-control">-->
 
         </div>
 
@@ -193,6 +184,59 @@
 
     </div>
   </div>
+  <!--  Create project modal window  end -->
+
+  <!--  Create issue modal window  -->
+
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" id="addIssue" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add Track</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="control-group form-group col-md-6">
+              <label>Tracker</label>
+              <select class="form-control" id="sel1" ng-model="tracker">
+                <option></option>
+                <option>Issue</option>
+                <option>Feature</option>
+                <option>PM</option>
+                <option>Support</option>
+              </select>
+            </div>
+
+            <div class="dropdown col-sm-6">
+              <label>Assignee</label>
+              <select class="form-control" id="sel1" ng-model="selectedUser">
+                <option ng-repeat="user in users" >{{user.name}}</option>
+              </select>
+            </div>
+
+            <div class="control-group form-group col-md-12">
+              <label>Description</label>
+              <input type="text" class="form-control" placeholder="" ng-model="newIssueDescription">
+              </span>
+            </div>
+            <br/>
+            <div class="col-sm-4 col-sm-offset-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit" ng-disabled="((tracker == null) || (newIssueDescription == null) || (selectedUser == null))" ng-click="addIssue()">
+                <span>Add Track</span>
+                <!--<span class="overlord-loading-spinner fa fa-spinner" ng-show="signupForm.loading" ></span>-->
+                <!--<span ng-show="signupForm.loading">Preparing your new project...</span>-->
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <!--  Create issue modal window  end -->
 
 
 

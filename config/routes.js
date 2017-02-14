@@ -53,7 +53,8 @@ module.exports.routes = {
   'POST /getIssues': 'ProjectsController.getIssues',
   'POST /getIssue': 'ProjectsController.getIssue',
   'POST /addProject': 'ProjectsController.addProject',
-  'POST /getUsers': 'ProjectsController.getUsers'
+  'POST /addIssue': 'ProjectsController.addIssue',
+  'POST /getUsers': 'UserController.getUsers'
 
   // '/': {
   //   view: 'homepage'
