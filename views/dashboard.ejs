@@ -12,6 +12,7 @@
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/js/dependencies/angular.1.3.js"></script>
     <script src="/js/dependencies/angular-toastr.js"></script>
+    <script src="/js/dependencies/angular-route.js"></script>
     <script src="/js/dependencies/bootstrap.js"></script>
     <script src="/js/dependencies/compareTo.module.js"></script>
     <script src="/js/public/signup/SignupModule.js"></script>
@@ -29,11 +30,11 @@
     };
     </script>
   </head>
-  <body ng-app="DashboardModule" ng-controller="DashboardController" ng-cloak>
+  <body ng-app="DashboardModule" ng-cloak ng-init="user(<%=me.id%>,<%=me.name%>)" ng-controller="DashboardController">
 
 
   <!-- container = Fixed-width container container-fluid = full-width -->
-    <div class="container-fluid"  ng-init="getProjects(<%=me.id%>)" >
+    <div class="container-fluid" >
       <!-- Creates the navbar -->
       <nav class="navbar navbar-default navbar-inverse">
         <!-- This creates the mechanism for collapse button -->
@@ -65,74 +66,32 @@
         </div>
       </nav>
       <div class="btn btn-default" id="project">Add project</div>
+      <a href="#projects"><div class="btn btn-default" id="project">My projects</div></a>
+      <a href="#/"><div class="btn btn-default" id="project">My issues</div></a>
       <!--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
+      <ng-view>      </ng-view>
 
 
-      <center>
-      <h1>Your projects at Kinect.PRO</h1>
-      </center>
-      <div class="col-sm-6 projects">
-        <table class="table table-bordered" >
-          <thead>
-          <tr>
-            <th>#</th>
-            <th>Project</th>
-            <th>Description</th>
-          </tr>
-          </thead>
-          <tbody ng-repeat="Project in projects">
-          <tr>
-            <td>{{Project.project_id}}</td>
-            <td><a href="#" ng-click="getIssues(Project.project_id)">{{Project.project_name}}</a></td>
-            <td><a href="#" ng-click="openProject()">{{Project.description}}</a><span id="newIssue"onclick="newIssue()" ng-click="issueProject(Project.project_id)"  class="glyphicon glyphicon-plus pull-right" aria-hidden="true"></span></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+<!--&lt;!&ndash;  Issue modal window  &ndash;&gt;-->
+    <!--</div>-->
+  <!--<div class="modal fade bs-example-modal-lg" tabindex="-1" id="issue" role="dialog" aria-labelledby="myLargeModalLabel">-->
+    <!--<div class="modal-dialog modal-lg" role="document">-->
+      <!--<div class="modal-content">-->
+        <!--<div class="modal-header">-->
+          <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+          <!--<h4 class="modal-title">{{issue[0].tracker}} # {{issue[0].id}}</h4>-->
+        <!--</div>-->
+        <!--<div class="modal-body">-->
+          <!--{{issue[0].subject}}-->
+          <!--&lt;!&ndash;<input ng-model="forgotMail" type="email" placeholder="email" name="email" class="form-control">&ndash;&gt;-->
 
-      <div class="col-sm-6" ng-show="issues.length != 0 && issues">
-        <table class="table table-bordered" >
-          <thead>
-          <tr>
-            <th>#</th>
-            <th>Tracker</th>
-            <th>Subject</th>
-          </tr>
-          </thead>
-          <tbody ng-repeat="issue in issues" >
-          <tr>
-            <td>{{issue.id}}</td>
-            <td>{{issue.tracker}}</td>
-            <td onclick="issue()"><a href="#" ng-click="openIssue(issue.id)">{{issue.subject}}</a></td>
+        <!--</div>-->
 
-          </tr>
+      <!--</div>-->
 
-          </tbody>
-        </table>
-
-      </div>
-
-
-<!--  Issue modal window  -->
-    </div>
-  <div class="modal fade bs-example-modal-lg" tabindex="-1" id="myModal" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">{{issue[0].tracker}} # {{issue[0].id}}</h4>
-        </div>
-        <div class="modal-body">
-          {{issue[0].subject}}
-          <!--<input ng-model="forgotMail" type="email" placeholder="email" name="email" class="form-control">-->
-
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-  <!--  Issue modal window end -->
+    <!--</div>-->
+  <!--</div>-->
+  <!--&lt;!&ndash;  Issue modal window end &ndash;&gt;-->
 
   <!--  Create project modal window  -->
 
@@ -186,59 +145,8 @@
   </div>
   <!--  Create project modal window  end -->
 
-  <!--  Create issue modal window  -->
-
-  <div class="modal fade bs-example-modal-lg" tabindex="-1" id="addIssue" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Add Track</h4>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="control-group form-group col-md-6">
-              <label>Tracker</label>
-              <select class="form-control" id="sel1" ng-model="tracker">
-                <option></option>
-                <option>Issue</option>
-                <option>Feature</option>
-                <option>PM</option>
-                <option>Support</option>
-              </select>
-            </div>
-
-            <div class="dropdown col-sm-6">
-              <label>Assignee</label>
-              <select class="form-control" id="sel1" ng-model="selectedUser">
-                <option ng-repeat="user in users" >{{user.name}}</option>
-              </select>
-            </div>
-
-            <div class="control-group form-group col-md-12">
-              <label>Description</label>
-              <input type="text" class="form-control" placeholder="" ng-model="newIssueDescription">
-              </span>
-            </div>
-            <br/>
-            <div class="col-sm-4 col-sm-offset-4">
-              <button class="btn btn-primary btn-lg btn-block" type="submit" ng-disabled="((tracker == null) || (newIssueDescription == null) || (selectedUser == null))" ng-click="addIssue()">
-                <span>Add Track</span>
-                <!--<span class="overlord-loading-spinner fa fa-spinner" ng-show="signupForm.loading" ></span>-->
-                <!--<span ng-show="signupForm.loading">Preparing your new project...</span>-->
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </div>
   <!--  Create issue modal window  end -->
-
-
+    </div>
 
 
   </body>

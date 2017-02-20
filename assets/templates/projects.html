@@ -1,0 +1,139 @@
+<h4>Projects assigned to me ({{projects.length}})</h4>
+
+<div class="col-sm-6 projects" ng-init="getProjects()">
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Project</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody ng-repeat="Project in projects">
+    <tr>
+      <td>{{Project.project_id}}</td>
+      <td><a href="#" ng-click="getIssues(Project.project_id)">{{Project.project_name}}</a></td>
+      <td><a href="#" ng-click="openProject()">{{Project.description}}</a><span id="newIssue" onclick="newIssue()"
+                                                                                ng-click="issueProject(Project.project_id)"
+                                                                                class="glyphicon glyphicon-plus pull-right"
+                                                                                aria-hidden="true"></span></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+<!--  Create issue modal window  -->
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" id="addIssue" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">New Issue</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="control-group form-group col-md-6">
+            <label>Tracker</label>
+            <select class="form-control" id="sel1" ng-model="tracker">
+              <option>Issue</option>
+              <option>Feature</option>
+              <option>PM</option>
+              <option>Support</option>
+            </select>
+          </div>
+
+          <div class="dropdown col-sm-6">
+            <label>Assignee</label>
+            <select class="form-control" id="sel1" ng-model="selectedUser">
+              <option ng-repeat="user in users" >{{user.name}}</option>
+            </select>
+          </div>
+
+
+          <div class="control-group form-group col-md-12">
+            <label>Subject</label>
+            <input type="text" class="form-control" placeholder="" ng-model="newIssueSubject"></input>
+          </div>
+
+          <div class="control-group form-group col-md-12">
+            <label>Description</label>
+            <textarea type="text" style="height:100px; resize:vertical;" class="form-control" placeholder="" ng-model="newIssueDescription"></textarea>
+          </div>
+
+          <div class="control-group form-group col-md-3">
+            <label>Status</label>
+            <select class="form-control" ng-model="newIssueStatus">
+              <option>New</option>
+              <option>In progress</option>
+              <option>Solved</option>
+              <option>Feedback</option>
+              <option>Closed</option>
+            </select>
+          </div>
+          <div class="control-group form-group col-md-3 col-sm-offset-6">
+            <label>Start Date</label>
+            <input type="date" class="form-control" placeholder="" ng-model="newIssueStart"></input>
+          </div>
+          <div class="control-group form-group col-md-3">
+            <label>Priority</label>
+            <select class="form-control"  ng-model="newIssuePriority">
+              <option>Low</option>
+              <option>Normal</option>
+              <option>High</option>
+              <option>Critical</option>
+              <option>Immediate</option>
+            </select>
+          </div>
+          <div class="control-group form-group col-md-3 col-sm-offset-6">
+            <label>Due Date</label>
+            <input type="date" class="form-control" placeholder="" ng-model="newIssueDue"></input>
+          </div>
+          <div class="control-group form-group col-md-3">
+            <label>CheckList</label>
+            <input type="text" class="form-control" placeholder="" ng-model="newIssueCheckList"></input>
+          </div>
+          <div class="control-group form-group col-md-3 col-sm-offset-6">
+            <label>Estimated time</label>
+            <input type="number" class="form-control" placeholder="" ng-model="newIssueEstimate"></input>
+          </div>
+          <div class="control-group form-group col-md-4">
+            <label>Files</label>
+            <input type="file" class="form-control" placeholder="" ng-model="newIssuefiles"></input>
+          </div>
+          <div class="control-group form-group col-md-3 col-sm-offset-5">
+            <label>%Done</label>
+            <select class="form-control" id="sel1" ng-model="newIssueDone">
+              <option>10%</option>
+              <option>20%</option>
+              <option>30%</option>
+              <option>40%</option>
+              <option>50%</option>
+              <option>60%</option>
+              <option>70%</option>
+              <option>80%</option>
+              <option>90%</option>
+              <option>100%</option>
+            </select>
+          </div>
+
+
+          <br/>
+          <div class="col-sm-4 col-sm-offset-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit" ng-disabled="((tracker == null) || (newIssueDescription == null)||
+                                                                                          (selectedUser == null) || (newIssueDescription == null) ||
+                                                                                          (newIssueStatus == null) || (newIssuePriority == null) ||
+                                                                                          (newIssueDue == null) || (newIssueEstimate == null))" ng-click="addIssue()">
+              <span>Add Track</span>
+              <!--<span class="overlord-loading-spinner fa fa-spinner" ng-show="signupForm.loading" ></span>-->
+              <!--<span ng-show="signupForm.loading">Preparing your new project...</span>-->
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

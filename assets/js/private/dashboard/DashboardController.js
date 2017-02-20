@@ -1,11 +1,19 @@
-angular.module('DashboardModule').controller('DashboardController', ['$scope', '$http', 'toastr', function($scope, $http, toastr){
+angular.module('DashboardModule').controller('DashboardController', ['$scope', '$http', 'toastr','$location', function($scope, $http, toastr,$location ){
 
 
-  $scope.getProjects = function (user_id) {
+  console.log("Dashboard Ctrl Init");
+
+  $scope.user = function (user_id,user_name) {
+    console.log("User init");
+    $scope.user_id =  user_id;
+    $scope.user_name =  user_name;
+    console.log($scope.user_id,$scope.user_name);
+  };
+
+  $scope.getProjects = function () {
     console.log("Getting projects");
-    console.log(user_id);
     $http.post('/getProjects', {
-         id: user_id
+         id: $scope.user_id
     })
       .then(function onSuccess(sailsResponse){
         $scope.projects = sailsResponse.data;
@@ -19,6 +27,13 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
       .finally(function eitherWay(){
         console.log("Finally");
       })
+  };
+  $scope.getUser = function(id){
+    for(var i = 0; i < $scope.users.length; i++){
+      if($scope.users[i].id == id){
+        return $scope.users[i].name;
+      }
+    }
   };
 
   $scope.getUsers = function () {
@@ -40,11 +55,10 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
       })
   };
 
-  $scope.getIssues = function (id) {
-    console.log(id);
+  $scope.getIssues = function () {
     console.log("Getting Issues");
     $http.post('/getIssues', {
-         id: id
+         id: $scope.user_id
     })
       .then(function onSuccess(sailsResponse){
         $scope.issues = sailsResponse.data;
@@ -59,8 +73,31 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
       })
   };
 
+  $scope.openProject = function (name) {
+    console.log(name);
+    console.log("Getting Project");
+    $http.post('/getProject', {
+      name: name
+    })
+      .then(function onSuccess(sailsResponse){
 
-  $scope.openIssue = function (id) {
+        $scope.project = sailsResponse.data;
+        console.log(sailsResponse.data);
+        // window.location = '/';
+      })
+      .catch(function onError(sailsResponse){
+        console.log(sailsResponse.data);
+      })
+      .finally(function eitherWay(){
+        console.log("Finally");
+      })
+  }
+
+  $scope.openIssue = function () {
+      console.log($location.path());
+      var id = $location.path().substr(7);
+      console.log(id);
+      // window.location = '#issue';
       console.log(id);
       console.log("Getting Issue");
       $http.post('/getIssue', {
@@ -69,8 +106,8 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
         .then(function onSuccess(sailsResponse){
 
           $scope.issue = sailsResponse.data;
-          console.log(sailsResponse.data);
-          // window.location = '/';
+          console.log($scope.issue);
+
         })
         .catch(function onError(sailsResponse){
           console.log(sailsResponse.data);
@@ -78,7 +115,7 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
         .finally(function eitherWay(){
           console.log("Finally");
         })
-    }
+    };
     $scope.addProject = function () {
       console.log("Adding Project...."+ $scope.newProjectTitle,$scope.newProjectDescription,$scope.selectedUser);
       for(var i = 0; i < $scope.users.length; i++){
@@ -95,23 +132,37 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
         console.log("Record added to db");
           window.location = '/';
       })
-        .catch(function onError(sailsResponse){
+        .catch(function onError(sailsResponse) {
           console.log("ERRRROOORR");
         })
 
     };
 
     $scope.issueProject = function (project_id) {
+      console.log("Issue Project - ",project_id);
       $scope.newIssueProject = project_id;
     };
 
     $scope.addIssue = function () {
       console.log("Adding issue");
-      console.log($scope.newIssueProject,$scope.tracker,$scope.newIssueDescription);
+      console.log($scope.newIssueProject,$scope.tracker,$scope.newIssueDescription,$scope.selectedUser);
+      for(var i = 0; i < $scope.users.length; i++) {
+        if($scope.users[i].name == $scope.selectedUser){
+          $scope.selectedUser_id = $scope.users[i].id;
+        }
+      }
         $http.post('/addIssue',{
          project_id : $scope.newIssueProject,
          tracker : $scope.tracker,
-         subject : $scope.newIssueDescription,
+         subject : $scope.newIssueSubject,
+         assigne : $scope.selectedUser_id,
+         description : $scope.newIssueDescription,
+         status : $scope.newIssueStatus,
+         priority : $scope.newIssuePriority,
+         startDate : $scope.newIssueStart,
+         dueDate : $scope.newIssueDue,
+         estimatedTime : $scope.newIssueEstimate,
+         done : $scope.newIssueDone
         }).then(function onSuccess(sailsResponse){
           console.log("Issue added to db");
           window.location = '/';
@@ -120,7 +171,5 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
             console.log("ERRRROOORR");
           })
       };
-
-
 }]);
 

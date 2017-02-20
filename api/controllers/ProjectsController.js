@@ -23,7 +23,7 @@ module.exports = {
   getIssues: function (req, res) {
     console.log("Getting issues Server");
     console.log("Project id  = " + req.param('id'));
-    Projects.query('SELECT project_tracker.tracker, project_tracker.subject, project_tracker.id FROM project_tracker WHERE project_tracker.project_id = ?', [req.param('id')], function (err, raweresult) {
+    Projects.query('SELECT projects.project_name,project_tracker.tracker, project_tracker.subject, project_tracker.id FROM project_tracker,projects WHERE project_tracker.assigne = ? and project_tracker.project_id = projects.id', [req.param('id')], function (err, raweresult) {
       if (err) {
         return res.serverError(err);
       }
@@ -35,7 +35,7 @@ module.exports = {
   getIssue: function (req, res) {
     console.log("Getting issue Server");
     console.log("Issue id  = " + req.param('id'));
-    Projects.query('SELECT * FROM project_tracker WHERE project_tracker.project_id = ?', [req.param('id')], function (err, raweresult) {
+    Projects.query('SELECT * FROM project_tracker WHERE project_tracker.id = ?', [req.param('id')], function (err, raweresult) {
       if (err) {
         return res.serverError(err);
       }
@@ -44,6 +44,19 @@ module.exports = {
       return res.ok(raweresult);
     })
   },
+  getProject: function (req, res) {
+    console.log("Getting project Server");
+    console.log("Project name  = " + req.param('name'));
+    Projects.query('SELECT * FROM projects WHERE projects.project_name = ?', [req.param('name')], function (err, raweresult) {
+      if (err) {
+        return res.serverError(err);
+      }
+      // console.log(res);
+      console.log(raweresult);
+      return res.ok(raweresult);
+    })
+  },
+
 
   addProject: function (req, res) {
     console.log("Adding project Server");
@@ -75,6 +88,14 @@ module.exports = {
       project_id: req.param('project_id'),
       tracker: req.param('tracker'),
       subject: req.param('subject'),
+      assigne: req.param('assigne'),
+      description : req.param('description'),
+      status : req.param('status'),
+      priority : req.param('priority'),
+      startDate : req.param('startDate'),
+      dueDate : req.param('dueDate'),
+      estimatedTime : req.param('estimatedTime'),
+      done : req.param('done')
     }).exec(function (err, newIssue){
       if (err) {
         return res.serverError(err);

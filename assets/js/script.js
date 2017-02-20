@@ -1,6 +1,9 @@
 
 
 $(document).ready(function(){
+  $("#showIssue").click(function(){
+    $("#issue").modal();
+  });
   $("#myBtn").click(function(){
     $("#myModal").modal();
   });
@@ -20,4 +23,7 @@ $(document).ready(function(){
    console.log("Modal window issue");
    $("#addIssue").modal().fadeIn();
 
+ }
+ function issue() {
+   $("#issue").modal().fadeIn();
  }

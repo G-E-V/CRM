@@ -16,10 +16,39 @@ module.exports = {
       type: 'string',
       required: true
     },
-
     subject: {
       type: 'string',
       required: true
+    },
+    assigne: {
+      type: 'int',
+      required: true
+    },
+    description: {
+      type: 'string',
+    },
+    status: {
+      type: 'string',
+      required: true
+    },
+    priority: {
+      type: 'string',
+      required: true
+    },
+    startDate: {
+      type: 'datetime',
+      required: true
+    },
+    dueDate: {
+      type: 'datetime',
+      required: true
+    },
+    estimatedTime: {
+      type: 'int',
+      required: true
+    },
+    done: {
+      type: 'string'
     }
 
   }

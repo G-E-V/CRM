@@ -1,0 +1,25 @@
+<h4>Issues assigned to me ({{issues.length}})</h4>
+
+<div class="col-sm-6" ng-init="getIssues()">
+  <table class="table table-bordered" >
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Project</th>
+      <th>Tracker</th>
+      <th>Subject</th>
+    </tr>
+    </thead>
+    <tbody ng-repeat="issue in issues" >
+    <tr>
+      <td>{{issue.id}}</td>
+      <td><a href="#" ng-click="openProject(issue.project_name)">{{issue.project_name}}</a></td>
+      <td>{{issue.tracker}}</td>
+      <td><a href="#issue/{{issue.id}}">{{issue.subject}}</a></td>
+
+    </tr>
+
+    </tbody>
+  </table>
+
+</div>
